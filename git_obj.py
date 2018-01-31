@@ -9,7 +9,3 @@ class GitObj:
         self.type = type
         self.sha1_hash = sha1_hash
         self.filename = filename
-        self.child_objects = []
-
-    def add_object(object):
-        self.objects.append(object)
