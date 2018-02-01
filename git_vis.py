@@ -1,4 +1,5 @@
 import os
+from anytree import Node, RenderTree
 
 #Parse some basic information about the repository
 
@@ -96,3 +97,31 @@ print "Tags"
 print tags.keys()
 
 #Begin repo generation
+#Rewind to find the first commit and build the tree from there
+
+master_head = branches["master"]
+last_node = Node(master_head)
+master_node = last_node
+
+while True:
+    commit = commits[master_head]
+    lines = commit.splitlines()
+
+    line = lines[1]
+    #TODO: Replace this with regex
+    if "<" in line and ">" in line and "author" in line:
+        print "\nFirst commit : " + parent
+        break
+    
+    parent = line.replace("parent ", "")
+    master_head = parent
+    #In the data structure the parent is technically the child
+    tmp = Node(parent, parent=last_node)
+    last_node = tmp
+for pre, fill, node in RenderTree(master_node):
+    print("%s%s" % (pre, node.name))
+
+#Tree generation
+
+
+
